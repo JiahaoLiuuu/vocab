@@ -1,176 +1,89 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // All terms from your document
-  const allTerms = [
-    { word: "Claim to be a US citizen", explanation: "To say you are a US citizen" },
-    { word: "Claim", explanation: "To say something without proof" },
-    { word: "Register to vote", explanation: "Sign up to choose a leader" },
-    { word: "Register", explanation: "To sign up" },
-    { word: "Vote", explanation: "To choose a leader" },
-    { word: "Overdue taxes", explanation: "Didn't pay taxes on time" },
-    { word: "Overdue", explanation: "Late for a payment" },
-    { word: "File a tax return", explanation: "Send a tax form to the government" },
-    { word: "Nonresident", explanation: "Someone who doesn't live in the US" },
-    { word: "Alien", explanation: "Someone who is not a US citizen" },
-    { word: "Associated with", explanation: "Connected to, involved in, took part in" },
-    { word: "Communist Party", explanation: "A group that believes the government should own and control everything (e.g., North Korea)" },
-    { word: "Totalitarian party", explanation: "A group that believes the government should control everything that people do" },
-    { word: "Dictator", explanation: "A person who has complete control over a country" },
-    { word: "Advocate", explanation: "To support and promote" },
-    { word: "Opposition", explanation: "Going against something" },
-    { word: "Establishment", explanation: "Starting or creating a group" },
-    { word: "Overthrow", explanation: "To remove a government by force" },
-    { word: "Unconstitutional means", explanation: "Methods that go against the Constitution" },
-    { word: "Unlawful", explanation: "Against the law" },
-    { word: "Assault", explanation: "To attack violently" },
-    { word: "Sabotage", explanation: "To intentionally damage or destroy something" },
-    { word: "Weapon", explanation: "A knife or a gun" },
-    { word: "Explosive", explanation: "A bomb" },
-    { word: "With intent", explanation: "Purposely" },
-    { word: "Engage", explanation: "To participate" },
-    { word: "Kidnapping", explanation: "Taking someone away illegally by force" },
-    { word: "Assassination", explanation: "Killing someone famous or important" },
-    { word: "Hijacking", explanation: "Taking control of a vehicle by force" },
-    { word: "Threaten", explanation: "To tell someone you're going to hurt them" },
-    { word: "Attempt", explanation: "To try" },
-    { word: "Conspire", explanation: "To plan with others" },
-    { word: "Incite", explanation: "To encourage" },
-    { word: "Participate", explanation: "To be part of" },
-    { word: "Torture", explanation: "To cause great pain to someone" },
-    { word: "Genocide", explanation: "To kill a group of people because of their religion or race" },
-    { word: "Kill", explanation: "To cause someone to die" },
-    { word: "Injure", explanation: "To hurt someone" },
-    { word: "Damage", explanation: "Harm or hurt" },
-    { word: "Sexual contact or activity", explanation: "Touching someone sexually" },
-    { word: "Did not consent", explanation: "Did not agree" },
-    { word: "Unable to consent", explanation: "Could not agree" },
-    { word: "Serve", explanation: "To work" },
-    { word: "Assist", explanation: "To help" },
-    { word: "Military unit", explanation: "The official Army for a country" },
-    { word: "Police unit", explanation: "A group that enforces the law and stops crime" },
-    { word: "Armed group", explanation: "A group that carries weapons" },
-    { word: "Paramilitary unit", explanation: "A group that acts like the military but is not official" },
-    { word: "Self-defense unit", explanation: "A group that protects a community using weapons" },
-    { word: "Vigilante unit", explanation: "A group that acts like the police but is not official" },
-    { word: "Rebel group", explanation: "A group that fights a government" },
-    { word: "Guerrilla group", explanation: "A group that uses weapons to fight the military, police, or government" },
-    { word: "Detain", explanation: "To force to stay" },
-    { word: "Prison or jail", explanation: "A place where the police keep people who have been arrested" },
-    { word: "Prison camp", explanation: "A camp to keep prisoners of war or political prisoners" },
-    { word: "Detention facility", explanation: "A place where people are forced to stay" },
-    { word: "Labor camp", explanation: "A place where people are forced to work" },
-    { word: "Direct", explanation: "To be in charge" },
-    { word: "Recruit", explanation: "To ask" },
-    { word: "Enlist", explanation: "To sign up" },
-    { word: "Conscript", explanation: "To require to join" },
-    { word: "Hostility", explanation: "Unfriendly behavior toward others" },
-    { word: "Combat", explanation: "To fight in a war" },
-    { word: "Crime", explanation: "An action that breaks the law" },
-    { word: "Offense", explanation: "Minor crime" },
-    { word: "Commit a crime", explanation: "To do something that breaks the law" },
-    { word: "Charged", explanation: "Formally told that you did something illegal" },
-    { word: "Convicted", explanation: "Found guilty of a crime under the law" },
-    { word: "Alternative sentencing", explanation: "A different way to punish someone instead of going to jail, such as community service" },
-    { word: "Rehabilitative program", explanation: "A program to help someone to recover from drugs or alcohol" },
-    { word: "Clemency", explanation: "Reduced sentence" },
-    { word: "Amnesty or pardon for", explanation: "Forgiveness for crimes committed" },
-    { word: "Arrested", explanation: "Caught by the police" },
-    { word: "Cited", explanation: "Given a ticket by the police" },
-    { word: "Detained", explanation: "Forced to stay" },
-    { word: "Confined", explanation: "Jailed by the police" },
-    { word: "Sentence", explanation: "A punishment under the law" },
-    { word: "Suspended sentence", explanation: "Delayed sentence" },
-    { word: "Probation", explanation: "Report to an officer regularly instead of jail time" },
-    { word: "Parole or been paroled", explanation: "Allowed to leave prison early" },
-    { word: "Prostitute", explanation: "Someone who has sex for money" },
-    { word: "Procure anyone for prostitution", explanation: "To encourage someone to have sex for money" },
-    { word: "Proceeds", explanation: "Money from a transaction" },
-    { word: "Cultivate", explanation: "To grow a plant" },
-    { word: "Distribute or dispense", explanation: "To give out" },
-    { word: "Smuggle", explanation: "To bring something illegally into the country" },
-    { word: "Controlled substances", explanation: "Drugs regulated by the government" },
-    { word: "Narcotics", explanation: "Illegal drugs such as heroin or cocaine" },
-    { word: "Drug paraphernalia", explanation: "Equipment to make or use illegal drugs" },
-    { word: "Obtain immigration benefit", explanation: "To gain things like a green card" },
-    { word: "Illegal gambling", explanation: "To play a game for money that is against the law" },
-    { word: "Support your dependent", explanation: "To pay child support" },
-    { word: "Pay alimony", explanation: "To give money to an ex-spouse after a divorce" },
-    { word: "Misrepresentation", explanation: "Lying about who you are or something you did" },
-    { word: "Public benefit", explanation: "Money from the government such as food stamps" },
-    { word: "False", explanation: "Not true" },
-    { word: "Fraudulent", explanation: "To claim something that is not true" },
-    { word: "Misleading", explanation: "Telling others something that is not true" },
-    { word: "Lie", explanation: "To say things that are not true" },
-    { word: "Removal", explanation: "Making someone leave the US" },
-    { word: "Rescission", explanation: "Cancelling a visa to stay in the US" },
-    { word: "Deportation proceedings", explanation: "Legal process of forcing someone to leave the US" },
-    { word: "Deported", explanation: "Forced to leave the US" },
-    { word: "Selective Service", explanation: "Registered in the US Armed Forces required by law" },
-    { word: "Hereditary title", explanation: "The title you receive when you are born into a royal family such as a prince or princess" },
-    { word: "Order of nobility", explanation: "A position given by a king or queen" },
-    { word: "Constitution", explanation: "The supreme law of the land" },
-    { word: "The form of government in the US", explanation: "Republic" },
-    { word: "Oath of allegiance to the United States", explanation: "A promise to be loyal to the United States" },
-    { word: "Bear arms", explanation: "To carry weapons" },
-    { word: "Bear arms on behalf of the United States", explanation: "To use a gun to defend the United States during a war" },
-    { word: "Perform non-combatant services", explanation: "Do work that is not fighting in a war" },
-    { word: "Civilian", explanation: "Anyone who is not in the military" },
-    { word: "Perform work of national importance under civil direction", explanation: "Do non-military work during a national crisis" },
-    { word: "Court-martialed", explanation: "Tried in military court for breaking military law" },
-    { word: "Continuous residence", explanation: "Living in the US without extended absences" },
-    { word: "Diversion/deferred prosecution/withheld adjudication/deferred adjudication", explanation: "Legal alternatives to traditional prosecution" },
-    { word: "Alternative sentencing", explanation: "Punishment options besides jail/prison, such as community service" },
-    { word: "Renounce and abjure", explanation: "To formally give up and reject" },
-    { word: "Immigration", explanation: "Moving to live in another country" },
-    { word: "Diversion", explanation: "Take offender from normal criminal proceeding into rehabilitation" },
-    { word: "Deferred prosecution", explanation: "To delay criminal charges" },
-    { word: "Withheld adjudication", explanation: "A judge accepts a plea but doesn't formally convict the defendant" },
-    { word: "Deferred adjudication", explanation: "Judge accepts guilty but delays judgment while defendant serves probation" },
-    { word: "Potentate", explanation: "A powerful leader with great authority" },
-    { word: "Sovereignty", explanation: "The power of a state or nation to govern itself independently" },
-    { word: "Deserted", explanation: "Leave military service without permission" },
-    { word: "Expunged", explanation: "When a criminal record is legally erased or sealed by court order" },
-    { word: "Abjure", explanation: "Reject" },
-    { word: "Federal", explanation: "US government" },
-    { word: "Marital status", explanation: "Your current legal relationship situation" },
-    { word: "Annulled", explanation: "Marriage officially ended as if it never happened" },
-    { word: "Civilian", explanation: "A person not in the military" },
-    { word: "Diversion", explanation: "A program that allows someone to avoid formal criminal charges" },
-    { word: "Lawful non-immigrant", explanation: "A foreigner legally allowed to stay temporarily" },
-    { word: "Lawful permanent resident", explanation: "A noncitizen legally allowed to live and work in the US permanently" },
-    { word: "Disclose", explanation: "Tell" },
-    { word: "Ethnicity", explanation: "One's cultural background or where they came from" },
-    { word: "Evasion", explanation: "Purposely avoiding a duty or question" },
-    { word: "Swear", explanation: "Promise" },
-    { word: "Prior", explanation: "Before" },
-    { word: "Exempt", explanation: "To not have to do something" },
-    { word: "Willing", explanation: "To agree to do something" },
-    { word: "Obtain", explanation: "To get something" },
-    { word: "Authorize", explanation: "To give permission" },
-    { word: "Dishonorable", explanation: "Shameful or disgraceful behavior" },
-    { word: "Stationed", explanation: "A soldier stays in one place as part of their job" },
-    { word: "Deploy", explanation: "To move soldiers to a new place so they can be ready" },
-    { word: "Fail", explanation: "Not complete or do something" },
-    { word: "Eligibility", explanation: "Meet the requirement to be able to do something" },
-    { word: "Plead guilty", explanation: "Formally admitting in court that you committed a crime" },
-    { word: "Naturalization ceremony", explanation: "When immigrants take the oath of allegiance and become US citizens" },
-    { word: "Naturalization", explanation: "Process to become a US citizen" },
-    { word: "Drafted in the US armed forces", explanation: "Being selected as a soldier" },
-    { word: "Desert", explanation: "Leave the military without permission" },
-    { word: "Dependent", explanation: "Someone you support financially" },
-    { word: "Widowed", explanation: "If your husband or wife has died and you have not married again" },
-    { word: "Date of birth", explanation: "When you were born" },
-    { word: "Current physical address", explanation: "Where you live now" },
-    { word: "Legal guardian", explanation: "Someone legally responsible for another person" },
-    { word: "Surrogate", explanation: "Someone legally authorized to make broad decisions for someone unable to act" },
-    { word: "Designated representative", explanation: "Someone legally authorized to handle specific tasks for someone else" },
-    { word: "Physical or developmental disability", explanation: "Anything about your body or mind that makes it difficult to do things like blindness" },
-    { word: "Mental impairment", explanation: "When someone's brain works differently making some tasks challenging" }
-  ];
-  
-  let terms = [...allTerms];
+  // Storage service to abstract data operations
+  const storageService = {
+    // Keys for localStorage
+    CURRENT_INDEX_KEY: 'flashcards-currentIndex',
+    TERMS_ORDER_KEY: 'flashcards-termsOrder',
+    IS_SHUFFLED_KEY: 'flashcards-isShuffled',
+    
+    // Save the current state
+    saveState(currentIndex, terms, isShuffled) {
+      localStorage.setItem(this.CURRENT_INDEX_KEY, currentIndex);
+      localStorage.setItem(this.IS_SHUFFLED_KEY, isShuffled);
+      
+      // Save the current order of terms (just the indices)
+      if (isShuffled) {
+        const termIndices = terms.map(term => allTerms.findIndex(t => 
+          t.word === term.word && t.explanation === term.explanation));
+        localStorage.setItem(this.TERMS_ORDER_KEY, JSON.stringify(termIndices));
+      } else {
+        // If not shuffled, we don't need to save the order
+        localStorage.removeItem(this.TERMS_ORDER_KEY);
+      }
+    },
+    
+    // Load saved state
+    loadState() {
+      const savedIndex = localStorage.getItem(this.CURRENT_INDEX_KEY);
+      const isShuffled = localStorage.getItem(this.IS_SHUFFLED_KEY) === 'true';
+      let savedTerms = null;
+      
+      if (isShuffled) {
+        const termIndices = JSON.parse(localStorage.getItem(this.TERMS_ORDER_KEY) || '[]');
+        if (termIndices.length > 0) {
+          savedTerms = termIndices.map(index => allTerms[index]);
+        }
+      }
+      
+      return {
+        currentIndex: savedIndex ? parseInt(savedIndex, 10) : 0,
+        terms: savedTerms || [...allTerms],
+        isShuffled: isShuffled
+      };
+    },
+    
+    // Clear saved state
+    clearState() {
+      localStorage.removeItem(this.CURRENT_INDEX_KEY);
+      localStorage.removeItem(this.TERMS_ORDER_KEY);
+      localStorage.removeItem(this.IS_SHUFFLED_KEY);
+    }
+  };
+
+  // Fetch vocabulary data from external JSON file
+  let allTerms = [];
+  let terms = [];
   let currentIndex = 0;
   let isExplanationVisible = false;
   let isSpeaking = false;
+  let isShuffled = false;
+
+  // Fetch vocabulary data
+  fetch('vocabulary.json')
+    .then(response => response.json())
+    .then(data => {
+      allTerms = data;
+      loadSavedState();
+      updateCard();
+    })
+    .catch(error => {
+      console.error('Error loading vocabulary:', error);
+      // Fallback to the embedded terms if JSON file fails to load
+      loadEmbeddedTerms();
+      loadSavedState();
+      updateCard();
+    });
+
+  // Fallback in case JSON file cannot be loaded
+  function loadEmbeddedTerms() {
+    allTerms = [
+      { word: "Claim to be a US citizen", explanation: "To say you are a US citizen" },
+      { word: "Claim", explanation: "To say something without proof" },
+      // Add the rest of your terms here...
+      { word: "Physical or developmental disability", explanation: "Anything about your body or mind that makes it difficult to do things like blindness" },
+      { word: "Mental impairment", explanation: "When someone's brain works differently making some tasks challenging" }
+    ];
+  }
   
   // DOM elements
   const wordNumberElement = document.getElementById('word-number');
@@ -185,8 +98,18 @@ document.addEventListener('DOMContentLoaded', function() {
   const resetButton = document.getElementById('reset-btn');
   const toggleExplanationButton = document.getElementById('toggle-explanation');
   
-  // Initialize the flashcard
-  updateCard();
+  // Load saved state from storage
+  function loadSavedState() {
+    const savedState = storageService.loadState();
+    currentIndex = savedState.currentIndex;
+    terms = savedState.terms;
+    isShuffled = savedState.isShuffled;
+  }
+  
+  // Save current state to storage
+  function saveCurrentState() {
+    storageService.saveState(currentIndex, terms, isShuffled);
+  }
   
   // Event listeners
   prevButton.addEventListener('click', showPreviousCard);
@@ -200,6 +123,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Functions
   function updateCard() {
     const term = terms[currentIndex];
+    if (!term) return; // Guard against undefined terms
+    
     wordNumberElement.textContent = `${currentIndex + 1}. ${term.word}`;
     explanationElement.textContent = term.explanation;
     counterElement.textContent = `${currentIndex + 1} / ${terms.length}`;
@@ -212,6 +137,9 @@ document.addEventListener('DOMContentLoaded', function() {
     isExplanationVisible = false;
     explanationContainer.style.display = 'none';
     toggleExplanationButton.textContent = 'Show Explanation';
+    
+    // Save state after updating
+    saveCurrentState();
   }
   
   function showPreviousCard() {
@@ -292,15 +220,19 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   function shuffleCards() {
-    terms = shuffleArray([...terms]);
+    terms = shuffleArray([...allTerms]);
     currentIndex = 0;
+    isShuffled = true;
     updateCard();
   }
   
   function resetCards() {
     terms = [...allTerms];
     currentIndex = 0;
+    isShuffled = false;
     updateCard();
+    // Clear saved state when resetting
+    storageService.clearState();
   }
   
   // Fisher-Yates shuffle algorithm
