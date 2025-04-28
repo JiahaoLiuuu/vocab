@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     CURRENT_INDEX_KEY: 'flashcards-currentIndex',
     TERMS_ORDER_KEY: 'flashcards-termsOrder',
     IS_SHUFFLED_KEY: 'flashcards-isShuffled',
+    BOOKMARKS_KEY: 'flashcards-bookmarks',
     
     // Save the current state
     saveState(currentIndex, terms, isShuffled) {
@@ -47,6 +48,34 @@ document.addEventListener('DOMContentLoaded', function() {
       localStorage.removeItem(this.CURRENT_INDEX_KEY);
       localStorage.removeItem(this.TERMS_ORDER_KEY);
       localStorage.removeItem(this.IS_SHUFFLED_KEY);
+    },
+    
+    // Add to save bookmarked terms
+    saveBookmark(termIndex, isBookmarked) {
+      let bookmarks = this.getBookmarks();
+      
+      if (isBookmarked) {
+        // Add to bookmarks if not already there
+        if (!bookmarks.includes(termIndex)) {
+          bookmarks.push(termIndex);
+        }
+      } else {
+        // Remove from bookmarks
+        bookmarks = bookmarks.filter(index => index !== termIndex);
+      }
+      
+      localStorage.setItem(this.BOOKMARKS_KEY, JSON.stringify(bookmarks));
+    },
+    
+    // Get all bookmarked term indices
+    getBookmarks() {
+      const savedBookmarks = localStorage.getItem(this.BOOKMARKS_KEY);
+      return savedBookmarks ? JSON.parse(savedBookmarks) : [];
+    },
+    
+    // Clear all bookmarks
+    clearBookmarks() {
+      localStorage.removeItem(this.BOOKMARKS_KEY);
     }
   };
 
@@ -57,57 +86,61 @@ document.addEventListener('DOMContentLoaded', function() {
   let isExplanationVisible = false;
   let isSpeaking = false;
   let isShuffled = false;
+  let bookmarkedTerms = [];
+  let showingBookmarksOnly = false;
 
   // Fetch vocabulary data
   fetch('vocabulary.json')
-  .then(response => response.json())
-  .then(data => {
-    allTerms = data;
-    
-    // Load the saved state
-    const savedState = storageService.loadState();
-    
-    // Apply saved state
-    currentIndex = savedState.currentIndex;
-    terms = savedState.terms;
-    isShuffled = savedState.isShuffled;
-    
-    // Ensure we have valid terms after loading state
-    if (!terms || terms.length === 0) {
-      terms = [...allTerms];
-    }
-    
-    // Make sure the currentIndex is valid
-    if (currentIndex >= terms.length) {
-      currentIndex = 0;
-    }
-    
-    // Update the UI
-    updateCard();
-  })
-  .catch(error => {
-    console.error('Error loading vocabulary:', error);
-    // Fallback to the embedded terms if JSON file fails to load
-    loadEmbeddedTerms();
-    
-    // Load saved state after setting up the fallback terms
-    const savedState = storageService.loadState();
-    currentIndex = savedState.currentIndex;
-    terms = savedState.terms;
-    isShuffled = savedState.isShuffled;
-    
-    // Ensure we have valid terms after loading state
-    if (!terms || terms.length === 0) {
-      terms = [...allTerms];
-    }
-    
-    // Make sure the currentIndex is valid
-    if (currentIndex >= terms.length) {
-      currentIndex = 0;
-    }
-    
-    updateCard();
-  });
+    .then(response => response.json())
+    .then(data => {
+      allTerms = data;
+      
+      // Load the saved state
+      const savedState = storageService.loadState();
+      
+      // Apply saved state
+      currentIndex = savedState.currentIndex;
+      terms = savedState.terms;
+      isShuffled = savedState.isShuffled;
+      bookmarkedTerms = storageService.getBookmarks();
+      
+      // Ensure we have valid terms after loading state
+      if (!terms || terms.length === 0) {
+        terms = [...allTerms];
+      }
+      
+      // Make sure the currentIndex is valid
+      if (currentIndex >= terms.length) {
+        currentIndex = 0;
+      }
+      
+      // Update the UI
+      updateCard();
+    })
+    .catch(error => {
+      console.error('Error loading vocabulary:', error);
+      // Fallback to the embedded terms if JSON file fails to load
+      loadEmbeddedTerms();
+      
+      // Load saved state after setting up the fallback terms
+      const savedState = storageService.loadState();
+      currentIndex = savedState.currentIndex;
+      terms = savedState.terms;
+      isShuffled = savedState.isShuffled;
+      bookmarkedTerms = storageService.getBookmarks();
+      
+      // Ensure we have valid terms after loading state
+      if (!terms || terms.length === 0) {
+        terms = [...allTerms];
+      }
+      
+      // Make sure the currentIndex is valid
+      if (currentIndex >= terms.length) {
+        currentIndex = 0;
+      }
+      
+      updateCard();
+    });
 
   // Fallback in case JSON file cannot be loaded
   function loadEmbeddedTerms() {
@@ -133,12 +166,22 @@ document.addEventListener('DOMContentLoaded', function() {
   const resetButton = document.getElementById('reset-btn');
   const toggleExplanationButton = document.getElementById('toggle-explanation');
   
+  const bookmarkButton = document.getElementById('bookmark-btn');
+  
+  // Add show bookmarks button to controls
+  const controlsContainer = document.querySelector('.controls');
+  const showBookmarksButton = document.createElement('button');
+  showBookmarksButton.textContent = 'Show Bookmarks';
+  showBookmarksButton.id = 'show-bookmarks-btn';
+  controlsContainer.appendChild(showBookmarksButton);
+  
   // Load saved state from storage
   function loadSavedState() {
     const savedState = storageService.loadState();
     currentIndex = savedState.currentIndex;
     terms = savedState.terms;
     isShuffled = savedState.isShuffled;
+    bookmarkedTerms = storageService.getBookmarks();
   }
   
   // Save current state to storage
@@ -154,6 +197,8 @@ document.addEventListener('DOMContentLoaded', function() {
   shuffleButton.addEventListener('click', shuffleCards);
   resetButton.addEventListener('click', resetCards);
   toggleExplanationButton.addEventListener('click', toggleExplanation);
+  bookmarkButton.addEventListener('click', toggleBookmark);
+  showBookmarksButton.addEventListener('click', toggleBookmarksView);
   
   // Functions
   function updateCard() {
@@ -172,6 +217,9 @@ document.addEventListener('DOMContentLoaded', function() {
     isExplanationVisible = false;
     explanationContainer.style.display = 'none';
     toggleExplanationButton.textContent = 'Show Explanation';
+    
+    // Update bookmark icon
+    updateBookmarkIcon();
     
     // Save state after updating
     saveCurrentState();
@@ -258,6 +306,8 @@ document.addEventListener('DOMContentLoaded', function() {
     terms = shuffleArray([...allTerms]);
     currentIndex = 0;
     isShuffled = true;
+    showingBookmarksOnly = false;
+    showBookmarksButton.textContent = 'Show Bookmarks';
     updateCard();
   }
   
@@ -265,6 +315,8 @@ document.addEventListener('DOMContentLoaded', function() {
     terms = [...allTerms];
     currentIndex = 0;
     isShuffled = false;
+    showingBookmarksOnly = false;
+    showBookmarksButton.textContent = 'Show Bookmarks';
     updateCard();
     // Clear saved state when resetting
     storageService.clearState();
@@ -277,6 +329,73 @@ document.addEventListener('DOMContentLoaded', function() {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+  }
+  
+  // Toggle bookmark status for current term
+  function toggleBookmark() {
+    const originalIndex = allTerms.findIndex(term => 
+      term.word === terms[currentIndex].word && 
+      term.explanation === terms[currentIndex].explanation
+    );
+    
+    const isCurrentlyBookmarked = bookmarkedTerms.includes(originalIndex);
+    
+    // Toggle bookmark status
+    if (isCurrentlyBookmarked) {
+      bookmarkedTerms = bookmarkedTerms.filter(idx => idx !== originalIndex);
+    } else {
+      bookmarkedTerms.push(originalIndex);
+    }
+    
+    // Save to storage
+    storageService.saveBookmark(originalIndex, !isCurrentlyBookmarked);
+    
+    // Update icon
+    updateBookmarkIcon();
+  }
+  
+  // Update bookmark icon based on current term
+  function updateBookmarkIcon() {
+    const originalIndex = allTerms.findIndex(term => 
+      term.word === terms[currentIndex].word && 
+      term.explanation === terms[currentIndex].explanation
+    );
+    
+    const isBookmarked = bookmarkedTerms.includes(originalIndex);
+    const bookmarkIcon = bookmarkButton.querySelector('.bookmark-icon');
+    
+    if (isBookmarked) {
+      bookmarkIcon.classList.add('active');
+    } else {
+      bookmarkIcon.classList.remove('active');
+    }
+  }
+  
+  // Toggle between all terms and bookmarked terms only
+  function toggleBookmarksView() {
+    showingBookmarksOnly = !showingBookmarksOnly;
+    
+    if (showingBookmarksOnly) {
+      // Filter to show only bookmarked terms
+      terms = allTerms.filter((_, index) => bookmarkedTerms.includes(index));
+      showBookmarksButton.textContent = 'Show All Terms';
+      
+      // If no bookmarks, show message and revert
+      if (terms.length === 0) {
+        alert("You haven't bookmarked any terms yet!");
+        terms = isShuffled ? shuffleArray([...allTerms]) : [...allTerms];
+        showingBookmarksOnly = false;
+        showBookmarksButton.textContent = 'Show Bookmarks';
+      }
+    } else {
+      // Show all terms
+      terms = isShuffled ? shuffleArray([...allTerms]) : [...allTerms];
+      showBookmarksButton.textContent = 'Show Bookmarks';
+    }
+    
+    // Reset to first card
+    currentIndex = 0;
+    updateCard();
   }
   
   // Add touch swipe functionality for mobile

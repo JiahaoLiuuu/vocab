@@ -189,6 +189,37 @@ h1 {
   background-color: #357abD;
 }
 
+.bookmark-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
+.bookmark-icon {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: #555;
+  stroke-width: 2;
+  transition: all 0.3s;
+}
+
+.bookmark-icon.active {
+  fill: #4a90e2;
+  stroke: #4a90e2;
+}
+
+.bookmark-btn:hover .bookmark-icon {
+  stroke: #000;
+}
+
 /* Responsive styles */
 @media (max-width: 480px) {
   h1 {
