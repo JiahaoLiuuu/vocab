@@ -220,6 +220,35 @@ h1 {
   stroke: #000;
 }
 
+.search-container {
+  display: flex;
+  margin-top: 10px;
+  width: 100%;
+}
+
+#search-input {
+  flex-grow: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+  font-size: 14px;
+}
+
+#search-btn {
+  padding: 8px 15px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+#search-btn:hover {
+  background-color: #357abD;
+}
+
 /* Responsive styles */
 @media (max-width: 480px) {
   h1 {
@@ -285,5 +314,19 @@ h1 {
   .controls button {
     padding: 6px 12px;
     font-size: 13px;
+  }
+
+  .search-container {
+    flex-direction: column;
+  }
+  
+  #search-input {
+    border-radius: 4px;
+    margin-bottom: 5px;
+  }
+  
+  #search-btn {
+    border-radius: 4px;
+    width: 100%;
   }
 }
