@@ -60,19 +60,54 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Fetch vocabulary data
   fetch('vocabulary.json')
-    .then(response => response.json())
-    .then(data => {
-      allTerms = data;
-      loadSavedState();
-      updateCard();
-    })
-    .catch(error => {
-      console.error('Error loading vocabulary:', error);
-      // Fallback to the embedded terms if JSON file fails to load
-      loadEmbeddedTerms();
-      loadSavedState();
-      updateCard();
-    });
+  .then(response => response.json())
+  .then(data => {
+    allTerms = data;
+    
+    // Load the saved state
+    const savedState = storageService.loadState();
+    
+    // Apply saved state
+    currentIndex = savedState.currentIndex;
+    terms = savedState.terms;
+    isShuffled = savedState.isShuffled;
+    
+    // Ensure we have valid terms after loading state
+    if (!terms || terms.length === 0) {
+      terms = [...allTerms];
+    }
+    
+    // Make sure the currentIndex is valid
+    if (currentIndex >= terms.length) {
+      currentIndex = 0;
+    }
+    
+    // Update the UI
+    updateCard();
+  })
+  .catch(error => {
+    console.error('Error loading vocabulary:', error);
+    // Fallback to the embedded terms if JSON file fails to load
+    loadEmbeddedTerms();
+    
+    // Load saved state after setting up the fallback terms
+    const savedState = storageService.loadState();
+    currentIndex = savedState.currentIndex;
+    terms = savedState.terms;
+    isShuffled = savedState.isShuffled;
+    
+    // Ensure we have valid terms after loading state
+    if (!terms || terms.length === 0) {
+      terms = [...allTerms];
+    }
+    
+    // Make sure the currentIndex is valid
+    if (currentIndex >= terms.length) {
+      currentIndex = 0;
+    }
+    
+    updateCard();
+  });
 
   // Fallback in case JSON file cannot be loaded
   function loadEmbeddedTerms() {
