@@ -1,0 +1,258 @@
+/* Base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: #f5f5f5;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+/* Typography */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 24px;
+}
+
+/* Flashcard styles */
+.flashcard {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.card-content {
+  padding: 15px;
+}
+
+.word-container, .explanation-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.explanation-container {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  display: none; /* Hide explanation by default */
+}
+
+.word {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.3;
+  width: 85%;
+  word-break: break-word;
+}
+
+.explanation {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.4;
+  width: 85%;
+  word-break: break-word;
+}
+
+/* Button styles */
+.speaker-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
+.speaker-icon {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: #555;
+  stroke-width: 2;
+  transition: stroke 0.3s;
+}
+
+.speaker-btn:hover .speaker-icon {
+  stroke: #000;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.nav-btn {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  touch-action: manipulation;
+}
+
+.toggle-btn {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  padding: 10px 20px;
+  width: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  touch-action: manipulation;
+}
+
+.toggle-btn:hover {
+  background-color: #357abD;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.nav-btn:hover {
+  background-color: #357abD;
+}
+
+.nav-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.counter {
+  font-size: 16px;
+  color: #555;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.controls button {
+  padding: 8px 15px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  touch-action: manipulation;
+}
+
+.controls button:hover {
+  background-color: #357abD;
+}
+
+/* Responsive styles */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  
+  body {
+    padding: 5px;
+  }
+  
+  .container {
+    padding: 5px;
+  }
+
+  .card-content {
+    padding: 12px;
+  }
+  
+  .word {
+    font-size: 18px;
+  }
+  
+  .explanation {
+    font-size: 15px;
+  }
+  
+  .explanation-container {
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+
+  .speaker-btn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .speaker-icon {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .nav-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  
+  .toggle-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+    margin-top: 12px;
+    margin-bottom: 4px;
+  }
+
+  .counter {
+    font-size: 14px;
+  }
+  
+  .controls {
+    margin-bottom: 15px;
+  }
+  
+  .controls button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
